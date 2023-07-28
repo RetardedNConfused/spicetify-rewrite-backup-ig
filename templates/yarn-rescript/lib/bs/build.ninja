@@ -1,0 +1,14 @@
+rescript = 1
+g_finger := c:\Users\Delusoire\Dev\spicetify-rewrite\template-rescript\node_modules\@rescript\core\lib\ocaml\install.stamp
+rule astj
+  command = "c:\Users\Delusoire\Dev\spicetify-rewrite\template-rescript\node_modules\rescript\win32\bsc.exe"  -bs-v 10.1.4 -open RescriptCore -absname -bs-ast -o $out $i
+o src\app.ast : astj ..\..\src\app.res
+rule deps
+  command = "c:\Users\Delusoire\Dev\spicetify-rewrite\template-rescript\node_modules\rescript\win32\bsb_helper.exe" -hash f472d5458c0f421c4040ca77df72e664 $in
+  restat = 1
+o src\app.d : deps src\app.ast
+rule mij
+  command = "c:\Users\Delusoire\Dev\spicetify-rewrite\template-rescript\node_modules\rescript\win32\bsc.exe" -I "src\shims" -I src -I "c:\Users\Delusoire\Dev\spicetify-rewrite\template-rescript\node_modules\@rescript\core\lib\ocaml" -open RescriptCore  -bs-gentype -bs-package-name template-rescript -bs-package-output commonjs:$in_d:.bs.js -bs-v $g_finger $i
+  dyndep = 1
+  restat = 1
+o src\app.cmj src\app.cmi ..\..\src\app.bs.js : mij src\app.ast

@@ -1,0 +1,28 @@
+{
+    "name": "template-rescript",
+    "sources": {
+        "dir": "src",
+        "subdirs": true
+    },
+    "package-specs": {
+        "module": "commonjs",
+        "in-source": true
+    },
+    "suffix": ".bs.js",
+    "bsc-flags": [
+        "-open RescriptCore"
+    ],
+    "bs-dependencies": [
+        "@rescript/core"
+    ],
+    "gentypeconfig": {
+        "shims": {
+            "Spicetify": "Spicetify"
+        },
+        "module": "es6",
+        "debug": {
+            "all": false,
+            "basic": false
+        }
+    }
+}

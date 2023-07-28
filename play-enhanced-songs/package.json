@@ -1,0 +1,31 @@
+{
+    "name": "play-enhanced-songs",
+    "type": "module",
+    "scripts": {
+        "build": "node esbuild.config.js"
+    },
+    "packageManager": "yarn@3.6.1",
+    "dependencies": {
+        "@babel/core": "^7.22.9",
+        "esbuild": "^0.18.16",
+        "esbuild-plugin-babel": "^0.2.3",
+        "esbuild-plugin-external-global": "^1.0.1",
+        "fp-ts": "^2.16.1",
+        "fp-ts-std": "^0.17.1",
+        "monocle-ts": "^2.3.13",
+        "newtype-ts": "^0.3.5",
+        "spcr-settings": "^1.2.0"
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-function-bind": "^7.22.5",
+        "@babel/plugin-proposal-partial-application": "^7.22.5",
+        "@babel/plugin-proposal-pipeline-operator": "^7.22.5",
+        "@babel/preset-env": "^7.22.9",
+        "@babel/preset-react": "^7.22.5",
+        "@babel/preset-typescript": "^7.22.5",
+        "@types/node": "^20.4.5",
+        "ts-node": "^10.9.1",
+        "tsc": "^2.0.4",
+        "typescript": "^5.1.6"
+    }
+}

@@ -1,0 +1,14 @@
+#Start(779526810)
+
+  Warning number 21
+  c:\Users\Delusoire\Dev\spicetify-rewrite\template-rescript\src\app.res:61:5-47
+
+  59 ┆ fetchPlaylistEnhancedSongs(spotUri)
+  60 ┆ ->Promise.then(queue => {
+  61 ┆   sp["Platform"]["PlayerAPI"]["clearQueue"]()
+  62 ┆   sp["Platform"]["PlayerAPI"]["addToQueue"](queue)
+  63 ┆ })
+
+  this statement never returns (or has an unsound type.)
+
+#Done(779527013)

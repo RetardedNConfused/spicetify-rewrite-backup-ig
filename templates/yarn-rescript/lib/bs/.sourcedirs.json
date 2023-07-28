@@ -1,0 +1,1 @@
+{ "dirs" : [ "src" , "src\\shims" ] , "pkgs" : [ [ "@rescript\\core" , "c:\\Users\\Delusoire\\Dev\\spicetify-rewrite\\template-rescript\\node_modules\\@rescript\\core" ] ] , "generated" : [] }
