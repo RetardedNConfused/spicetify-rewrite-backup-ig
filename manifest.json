@@ -1,0 +1,71 @@
+[
+    {
+        "name": "play-enhanced-songs",
+        "description": "",
+        "preview": "play-enhanced-songs/src/assets/preview.png",
+        "main": "play-enhanced-songs/dist/play.enhanced.songs.js",
+        "readme": "play-enhanced-songs/README.md",
+        "authors": [
+            {
+                "name": "Delusoire",
+                "url": "https://github.com/Delusoire"
+            }
+        ],
+        "tags": [
+            "enhanced"
+        ]
+    },
+    {
+        "name": "search-on-youtube",
+        "description": "",
+        "preview": "search-on-youtube/src/assets/preview.png",
+        "main": "search-on-youtube/dist/search.on.youtube.js",
+        "readme": "search-on-youtube/README.md",
+        "authors": [
+            {
+                "name": "Delusoire",
+                "url": "https://github.com/Delusoire"
+            }
+        ],
+        "tags": [
+            "search",
+            "youtube"
+        ]
+    },
+    {
+        "name": "sort-plus",
+        "description": "",
+        "preview": "sort-plus/src/assets/preview.png",
+        "main": "sort-plus/dist/sort.plus.js",
+        "readme": "sort-plus/README.md",
+        "authors": [
+            {
+                "name": "Delusoire",
+                "url": "https://github.com/Delusoire"
+            }
+        ],
+        "tags": [
+            "sort",
+            "playcount"
+        ]
+    },
+    {
+        "name": "vaultify",
+        "description": "",
+        "preview": "vaultify/src/assets/preview.png",
+        "main": "vaultify/dist/vaultify.js",
+        "readme": "vaultify/README.md",
+        "authors": [
+            {
+                "name": "Delusoire",
+                "url": "https://github.com/Delusoire"
+            }
+        ],
+        "tags": [
+            "save",
+            "backup",
+            "restore",
+            "settings"
+        ]
+    }
+]

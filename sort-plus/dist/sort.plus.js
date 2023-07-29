@@ -76,37 +76,6 @@ sort.plus = (() => {
   };
 
   // .yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/function.js
-  var function_exports = {};
-  __export(function_exports, {
-    SK: () => SK,
-    absurd: () => absurd,
-    apply: () => apply,
-    constFalse: () => constFalse,
-    constNull: () => constNull,
-    constTrue: () => constTrue,
-    constUndefined: () => constUndefined,
-    constVoid: () => constVoid,
-    constant: () => constant,
-    decrement: () => decrement,
-    dual: () => dual,
-    flip: () => flip,
-    flow: () => flow,
-    getBooleanAlgebra: () => getBooleanAlgebra,
-    getEndomorphismMonoid: () => getEndomorphismMonoid,
-    getMonoid: () => getMonoid,
-    getRing: () => getRing,
-    getSemigroup: () => getSemigroup,
-    getSemiring: () => getSemiring,
-    hole: () => hole,
-    identity: () => identity,
-    increment: () => increment,
-    not: () => not,
-    pipe: () => pipe,
-    tuple: () => tuple,
-    tupled: () => tupled,
-    unsafeCoerce: () => unsafeCoerce,
-    untupled: () => untupled
-  });
   function identity(a) {
     return a;
   }
@@ -168,34 +137,9 @@ sort.plus = (() => {
     }
     return;
   }
-  function tuple() {
-    var t = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-      t[_i] = arguments[_i];
-    }
-    return t;
-  }
-  function increment(n) {
-    return n + 1;
-  }
-  function decrement(n) {
-    return n - 1;
-  }
-  function absurd(_) {
-    throw new Error("Called `absurd` function which should be uncallable");
-  }
   function tupled(f) {
     return function(a) {
       return f.apply(void 0, a);
-    };
-  }
-  function untupled(f) {
-    return function() {
-      var a = [];
-      for (var _i = 0; _i < arguments.length; _i++) {
-        a[_i] = arguments[_i];
-      }
-      return f(a);
     };
   }
   function pipe(a, ab, bc, cd, de, ef, fg, gh, hi) {
@@ -227,12 +171,7 @@ sort.plus = (() => {
       }
     }
   }
-  function not(predicate) {
-    return function(a) {
-      return !predicate(a);
-    };
-  }
-  var __spreadArray, getBooleanAlgebra, getSemigroup, getMonoid, getSemiring, getRing, apply, unsafeCoerce, constTrue, constFalse, constNull, constUndefined, constVoid, hole, SK, getEndomorphismMonoid, dual;
+  var __spreadArray, getSemigroup, getMonoid, apply, unsafeCoerce, constTrue, constNull, constUndefined, dual;
   var init_function = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/function.js"() {
       __spreadArray = function(to, from, pack) {
@@ -245,38 +184,6 @@ sort.plus = (() => {
             }
           }
         return to.concat(ar || Array.prototype.slice.call(from));
-      };
-      getBooleanAlgebra = function(B) {
-        return function() {
-          return {
-            meet: function(x, y) {
-              return function(a) {
-                return B.meet(x(a), y(a));
-              };
-            },
-            join: function(x, y) {
-              return function(a) {
-                return B.join(x(a), y(a));
-              };
-            },
-            zero: function() {
-              return B.zero;
-            },
-            one: function() {
-              return B.one;
-            },
-            implies: function(x, y) {
-              return function(a) {
-                return B.implies(x(a), y(a));
-              };
-            },
-            not: function(x) {
-              return function(a) {
-                return B.not(x(a));
-              };
-            }
-          };
-        };
       };
       getSemigroup = function(S) {
         return function() {
@@ -300,40 +207,6 @@ sort.plus = (() => {
           };
         };
       };
-      getSemiring = function(S) {
-        return {
-          add: function(f, g) {
-            return function(x) {
-              return S.add(f(x), g(x));
-            };
-          },
-          zero: function() {
-            return S.zero;
-          },
-          mul: function(f, g) {
-            return function(x) {
-              return S.mul(f(x), g(x));
-            };
-          },
-          one: function() {
-            return S.one;
-          }
-        };
-      };
-      getRing = function(R) {
-        var S = getSemiring(R);
-        return {
-          add: S.add,
-          mul: S.mul,
-          one: S.one,
-          zero: S.zero,
-          sub: function(f, g) {
-            return function(x) {
-              return R.sub(f(x), g(x));
-            };
-          }
-        };
-      };
       apply = function(a) {
         return function(f) {
           return f(a);
@@ -341,22 +214,8 @@ sort.plus = (() => {
       };
       unsafeCoerce = identity;
       constTrue = /* @__PURE__ */ constant(true);
-      constFalse = /* @__PURE__ */ constant(false);
       constNull = /* @__PURE__ */ constant(null);
       constUndefined = /* @__PURE__ */ constant(void 0);
-      constVoid = constUndefined;
-      hole = absurd;
-      SK = function(_, b) {
-        return b;
-      };
-      getEndomorphismMonoid = function() {
-        return {
-          concat: function(first2, second) {
-            return flow(first2, second);
-          },
-          empty: identity
-        };
-      };
       dual = function(arity, body) {
         var isDataFirst = typeof arity === "number" ? function(args) {
           return args.length >= arity;
@@ -665,12 +524,12 @@ sort.plus = (() => {
     ordString: () => ordString,
     reverse: () => reverse,
     trivial: () => trivial,
-    tuple: () => tuple2
+    tuple: () => tuple
   });
   function compare(first2, second) {
     return first2 < second ? -1 : first2 > second ? 1 : 0;
   }
-  var equalsDefault, fromCompare, tuple2, reverse, contramap_, contramap, URI, getSemigroup2, getMonoid2, Contravariant, trivial, equals, lt, gt, leq, geq, min, max, clamp, between, getTupleOrd, getDualOrd, ord, strictOrd, ordBoolean, ordString, ordNumber, ordDate;
+  var equalsDefault, fromCompare, tuple, reverse, contramap_, contramap, URI, getSemigroup2, getMonoid2, Contravariant, trivial, equals, lt, gt, leq, geq, min, max, clamp, between, getTupleOrd, getDualOrd, ord, strictOrd, ordBoolean, ordString, ordNumber, ordDate;
   var init_Ord = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Ord.js"() {
       init_Eq();
@@ -688,7 +547,7 @@ sort.plus = (() => {
           }
         };
       };
-      tuple2 = function() {
+      tuple = function() {
         var ords = [];
         for (var _i = 0; _i < arguments.length; _i++) {
           ords[_i] = arguments[_i];
@@ -801,7 +660,7 @@ sort.plus = (() => {
           };
         };
       };
-      getTupleOrd = tuple2;
+      getTupleOrd = tuple;
       getDualOrd = reverse;
       ord = Contravariant;
       strictOrd = {
@@ -2649,10 +2508,10 @@ sort.plus = (() => {
   });
 
   // .yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Predicate.js
-  var not2;
+  var not;
   var init_Predicate = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Predicate.js"() {
-      not2 = function(predicate) {
+      not = function(predicate) {
         return function(a) {
           return !predicate(a);
         };
@@ -3011,7 +2870,7 @@ sort.plus = (() => {
       };
       partition2 = function(predicate) {
         return function(fa) {
-          return separated(_filter2(fa, not2(predicate)), _filter2(fa, predicate));
+          return separated(_filter2(fa, not(predicate)), _filter2(fa, predicate));
         };
       };
       partitionMap2 = function(f) {
@@ -3899,7 +3758,6 @@ sort.plus = (() => {
   var init_es6 = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/index.js"() {
       init_Array();
-      init_function();
       init_HKT();
       init_number();
       init_Option();
@@ -3948,7 +3806,7 @@ sort.plus = (() => {
       unary = tupled;
       guard4 = (branches) => (fallback) => (input) => pipe(branches, map(([f, g]) => flow(fromPredicate2(f), map2(g))), concatAll4(getMonoid(getMonoid4(first()))()), apply(input), getOrElse(() => fallback(input)));
       unless = (f) => (onFalse) => (x) => f(x) ? x : onFalse(x);
-      when = flow(not2, unless);
+      when = flow(not, unless);
       invoke = (x) => (ys) => (z) => z[x](...ys);
       invokeNullary = flip(invoke)([]);
       curry2T = (f) => (a) => (b) => f([a, b]);
@@ -5706,9 +5564,8 @@ sort.plus = (() => {
       fetchTracksSpotAPI = flow(
         chunksOf3(50),
         map(fetchTracksSpotAPI50),
-        (x) => __async(void 0, null, function* () {
-          return pipe(yield Promise.all(x), flatten);
-        })
+        (x) => Promise.all(x),
+        async(flatten)
       );
       fetchTrackLFMAPI = (artist, trackName, lastFmUsername) => __async(void 0, null, function* () {
         return pipe(
@@ -5748,7 +5605,7 @@ sort.plus = (() => {
         artistUri: track.artists.items[0].uri,
         durationMilis: track.duration.totalMilliseconds,
         name: track.name,
-        playcount: track.playcount,
+        playcount: Number(track.playcount),
         popularity: void 0,
         releaseDate: void 0,
         uri: track.uri
@@ -5793,36 +5650,27 @@ sort.plus = (() => {
   });
 
   // src/util.tsx
-  var SortBy, SortProp;
+  var parseUri;
   var init_util = __esm({
     "src/util.tsx"() {
       "use strict";
-      SortBy = /* @__PURE__ */ ((SortBy2) => {
-        SortBy2["SPOTIFY_PLAYCOUNT"] = "Spotify - Play Count";
-        SortBy2["SPOTIFY_POPULARITY"] = "Spotify - Popularity";
-        SortBy2["LASTFM_SCROBBLES"] = "LastFM - Scrobbles";
-        SortBy2["LASTFM_PERSONALSCROBBLES"] = "LastFM - My Scrobbles";
-        SortBy2["LASTFM_PLAYCOUNT"] = "LastFM - Play Count";
-        return SortBy2;
-      })(SortBy || {});
-      SortProp = /* @__PURE__ */ ((SortProp2) => {
-        SortProp2["Spotify - Play Count"] = "playcount";
-        SortProp2["Spotify - Popularity"] = "popularity";
-        SortProp2["LastFM - Scrobbles"] = "scrobbles";
-        SortProp2["LastFM - My Scrobbles"] = "personalScrobbles";
-        SortProp2["LastFM - Play Count"] = "lastfmPlaycount";
-        return SortProp2;
-      })(SortProp || {});
+      parseUri = (uri) => {
+        var _a;
+        return (_a = uri.match(
+          new RegExp("^(?<type>spotify:(?:artist|track|album|playlist))(?:_v2)?:(?<id>[a-zA-Z0-9_]{22})")
+        )) == null ? void 0 : _a.groups;
+      };
     }
   });
 
   // src/app.tsx
   var app_exports = {};
   __export(app_exports, {
+    SortBy: () => SortBy,
+    SortProp: () => SortProp,
     default: () => app_default,
     fetchTracks: () => fetchTracks,
     getPlaylistTracks: () => getPlaylistTracks,
-    parseUri: () => parseUri,
     populateTracks: () => populateTracks,
     sortByProp: () => sortByProp
   });
@@ -5877,24 +5725,15 @@ sort.plus = (() => {
       if (CONFIG.artistLikedTracks)
         add(
           yield pipe(
-            uri,
-            parseUri,
-            lookup4("id"),
-            Option_exports.map(
-              flow(
-                fetchArtistLikedTracksSP,
-                (x) => __async(this, null, function* () {
-                  return Array_exports.map(parseTrackFromArtistLikedTracksSP)(yield x);
-                })
-              )
-            ),
-            Option_exports.getOrElse(constant(Promise.resolve([])))
+            parseUri(uri).id,
+            fetchArtistLikedTracksSP,
+            async(Array_exports.map(parseTrackFromArtistLikedTracksSP))
           )
         );
       return allTracks;
     });
   }
-  var app_default, getAlbumTracks, parseUri, getPlaylistTracks, fetchAPITracksFromTracks, fetchAlbumTracksFromTracks, populateTracksSpot, populateTrackLastFM, fetchTracks, populateTracks, queue, sortByProp, showIn, showAlways, createSortByPropSubmenu;
+  var app_default, SortBy, SortProp, getAlbumTracks, getPlaylistTracks, fetchAPITracksFromTracks, fetchAlbumTracksFromTracks, populateTracksSpot, populateTrackLastFM, fetchTracks, populateTracks, queue, sortByProp, showIn, showAlways, createSortByPropSubmenu;
   var init_app = __esm({
     "src/app.tsx"() {
       "use strict";
@@ -5907,11 +5746,27 @@ sort.plus = (() => {
       init_string();
       init_es62();
       init_api();
+      init_fp();
       init_parse();
       init_settings();
       init_util();
-      init_fp();
       app_default = {};
+      SortBy = /* @__PURE__ */ ((SortBy2) => {
+        SortBy2["SPOTIFY_PLAYCOUNT"] = "Spotify - Play Count";
+        SortBy2["SPOTIFY_POPULARITY"] = "Spotify - Popularity";
+        SortBy2["LASTFM_SCROBBLES"] = "LastFM - Scrobbles";
+        SortBy2["LASTFM_PERSONALSCROBBLES"] = "LastFM - My Scrobbles";
+        SortBy2["LASTFM_PLAYCOUNT"] = "LastFM - Play Count";
+        return SortBy2;
+      })(SortBy || {});
+      SortProp = /* @__PURE__ */ ((SortProp2) => {
+        SortProp2["Spotify - Play Count"] = "playcount";
+        SortProp2["Spotify - Popularity"] = "popularity";
+        SortProp2["LastFM - Scrobbles"] = "scrobbles";
+        SortProp2["LastFM - My Scrobbles"] = "personalScrobbles";
+        SortProp2["LastFM - Play Count"] = "lastfmPlaycount";
+        return SortProp2;
+      })(SortProp || {});
       getAlbumTracks = (uri) => __async(void 0, null, function* () {
         const albumRes = yield fetchAlbumGQL(uri);
         const releaseDate = albumRes.date.isoString.split("T")[0];
@@ -5927,12 +5782,6 @@ sort.plus = (() => {
           )
         );
       });
-      parseUri = (uri) => {
-        var _a;
-        return (_a = uri.match(
-          new RegExp("^(?<type>spotify:(?:artist|track|album|playlist))(?:_v2)?:(?<id>[a-zA-Z0-9_]{22})")
-        )) == null ? void 0 : _a.groups;
-      };
       getPlaylistTracks = flow(
         fetchPlaylistAPI,
         async(Array_exports.map(parseTrackFromPlaylistAPI))
@@ -5983,9 +5832,9 @@ sort.plus = (() => {
           track.name,
           CONFIG.lastFmUserName
         )).track;
-        track.lastfmPlaycount = lastfmTrack.listeners;
-        track.scrobbles = lastfmTrack.playcount;
-        track.personalScrobbles = lastfmTrack.userplaycount;
+        track.lastfmPlaycount = Number(lastfmTrack.listeners);
+        track.scrobbles = Number(lastfmTrack.playcount);
+        track.personalScrobbles = Number(lastfmTrack.userplaycount);
         return track;
       });
       fetchTracks = guard4([
@@ -6032,7 +5881,7 @@ sort.plus = (() => {
       ]);
       createSortByPropSubmenu = (name, icon) => new Spicetify.ContextMenu.Item(
         name,
-        unary(sortByProp(name)),
+        tupled(sortByProp(name)),
         showAlways,
         icon,
         false
@@ -6065,7 +5914,7 @@ sort.plus = (() => {
     ];
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     let timer = 0;
-    while (mustLoad.some(flow(function_exports.flip(lookup4)(Spicetify), Option_exports.isNone)))
+    while (mustLoad.some(flow(flip(lookup4)(Spicetify), Option_exports.isNone)))
       yield sleep(timer += 100);
     yield Promise.resolve().then(() => (init_app(), app_exports));
   }))();

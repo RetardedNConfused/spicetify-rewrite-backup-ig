@@ -206,9 +206,9 @@ const populateTrackLastFM = async (track: TrackData) => {
             CONFIG.lastFmUserName,
         )
     ).track
-    track.lastfmPlaycount = lastfmTrack.listeners
-    track.scrobbles = lastfmTrack.playcount
-    track.personalScrobbles = lastfmTrack.userplaycount
+    track.lastfmPlaycount = Number(lastfmTrack.listeners)
+    track.scrobbles = Number(lastfmTrack.playcount)
+    track.personalScrobbles = Number(lastfmTrack.userplaycount)
     return track
 }
 

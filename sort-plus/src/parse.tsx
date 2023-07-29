@@ -42,7 +42,7 @@ export const parseTopTrackFromArtist: TrackParser = track => ({
     artistUri: track.artists.items[0].uri,
     durationMilis: track.duration.totalMilliseconds,
     name: track.name,
-    playcount: track.playcount,
+    playcount: Number(track.playcount),
     popularity: undefined,
     releaseDate: undefined,
     uri: track.uri,
