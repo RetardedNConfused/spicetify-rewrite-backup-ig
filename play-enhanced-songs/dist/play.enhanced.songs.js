@@ -1,57 +1,15 @@
 "use strict";
-var vaultify = (() => {
-  var __create = Object.create;
+var play = play || {};
+play.enhanced = play.enhanced || {};
+play.enhanced.songs = (() => {
   var __defProp = Object.defineProperty;
-  var __defProps = Object.defineProperties;
-  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropNames = Object.getOwnPropertyNames;
-  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-  var __getProtoOf = Object.getPrototypeOf;
-  var __hasOwnProp = Object.prototype.hasOwnProperty;
-  var __propIsEnum = Object.prototype.propertyIsEnumerable;
-  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-  var __spreadValues = (a, b) => {
-    for (var prop in b || (b = {}))
-      if (__hasOwnProp.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
-    if (__getOwnPropSymbols)
-      for (var prop of __getOwnPropSymbols(b)) {
-        if (__propIsEnum.call(b, prop))
-          __defNormalProp(a, prop, b[prop]);
-      }
-    return a;
-  };
-  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
   var __esm = (fn, res) => function __init() {
     return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-  };
-  var __commonJS = (cb, mod) => function __require() {
-    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   };
   var __export = (target, all) => {
     for (var name in all)
       __defProp(target, name, { get: all[name], enumerable: true });
-  };
-  var __copyProps = (to, from, except, desc) => {
-    if (from && typeof from === "object" || typeof from === "function") {
-      for (let key of __getOwnPropNames(from))
-        if (!__hasOwnProp.call(to, key) && key !== except)
-          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-    }
-    return to;
-  };
-  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
-    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-    mod
-  ));
-  var __publicField = (obj, key, value) => {
-    __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-    return value;
   };
   var __async = (__this, __arguments, generator) => {
     return new Promise((resolve, reject) => {
@@ -170,7 +128,7 @@ var vaultify = (() => {
       }
     }
   }
-  var __spreadArray, getSemigroup, getMonoid, apply, constNull, constUndefined, dual;
+  var __spreadArray, constNull, constUndefined, dual;
   var init_function = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/function.js"() {
       __spreadArray = function(to, from, pack) {
@@ -183,33 +141,6 @@ var vaultify = (() => {
             }
           }
         return to.concat(ar || Array.prototype.slice.call(from));
-      };
-      getSemigroup = function(S) {
-        return function() {
-          return {
-            concat: function(f, g) {
-              return function(a) {
-                return S.concat(f(a), g(a));
-              };
-            }
-          };
-        };
-      };
-      getMonoid = function(M) {
-        var getSemigroupM = getSemigroup(M);
-        return function() {
-          return {
-            concat: getSemigroupM().concat,
-            empty: function() {
-              return M.empty;
-            }
-          };
-        };
-      };
-      apply = function(a) {
-        return function(f) {
-          return f(a);
-        };
       };
       constNull = /* @__PURE__ */ constant(null);
       constUndefined = /* @__PURE__ */ constant(void 0);
@@ -480,7 +411,7 @@ var vaultify = (() => {
   function compare(first2, second) {
     return first2 < second ? -1 : first2 > second ? 1 : 0;
   }
-  var equalsDefault, fromCompare, getSemigroup2, getMonoid2, strictOrd;
+  var equalsDefault, fromCompare, getSemigroup, getMonoid, strictOrd;
   var init_Ord = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Ord.js"() {
       init_Eq();
@@ -497,7 +428,7 @@ var vaultify = (() => {
           }
         };
       };
-      getSemigroup2 = function() {
+      getSemigroup = function() {
         return {
           concat: function(first2, second) {
             return fromCompare(function(a, b) {
@@ -507,9 +438,9 @@ var vaultify = (() => {
           }
         };
       };
-      getMonoid2 = function() {
+      getMonoid = function() {
         return {
-          concat: getSemigroup2().concat,
+          concat: getSemigroup().concat,
           empty: fromCompare(function() {
             return 0;
           })
@@ -522,28 +453,11 @@ var vaultify = (() => {
     }
   });
 
-  // .yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Magma.js
-  var concatAll;
-  var init_Magma = __esm({
-    ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Magma.js"() {
-      concatAll = function(M) {
-        return function(startWith) {
-          return function(as3) {
-            return as3.reduce(function(a, acc) {
-              return M.concat(a, acc);
-            }, startWith);
-          };
-        };
-      };
-    }
-  });
-
   // .yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Semigroup.js
-  var constant2, first, last, concatAll2, semigroupVoid, semigroupAll, semigroupAny, semigroupString, semigroupSum, semigroupProduct;
+  var constant2, first, last, semigroupVoid;
   var init_Semigroup = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Semigroup.js"() {
       init_function();
-      init_Magma();
       constant2 = function(a) {
         return {
           concat: function() {
@@ -559,38 +473,12 @@ var vaultify = (() => {
           return y;
         } };
       };
-      concatAll2 = concatAll;
       semigroupVoid = constant2(void 0);
-      semigroupAll = {
-        concat: function(x, y) {
-          return x && y;
-        }
-      };
-      semigroupAny = {
-        concat: function(x, y) {
-          return x || y;
-        }
-      };
-      semigroupString = {
-        concat: function(x, y) {
-          return x + y;
-        }
-      };
-      semigroupSum = {
-        concat: function(x, y) {
-          return x + y;
-        }
-      };
-      semigroupProduct = {
-        concat: function(x, y) {
-          return x * y;
-        }
-      };
     }
   });
 
   // .yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/ReadonlyNonEmptyArray.js
-  var __spreadArray3, isNonEmpty2, isOutOfBound, prependW, prepend, prependAll, intersperse, extract, head2, tail2, last2, concatAll3, intercalate;
+  var __spreadArray3, isNonEmpty2, isOutOfBound, prependW, prepend, prependAll, intersperse, extract, head2, tail2, last2, concatAll, intercalate;
   var init_ReadonlyNonEmptyArray = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/ReadonlyNonEmptyArray.js"() {
       init_function();
@@ -637,13 +525,13 @@ var vaultify = (() => {
       last2 = function(as3) {
         return as3[as3.length - 1];
       };
-      concatAll3 = function(S) {
+      concatAll = function(S) {
         return function(as3) {
           return as3.reduce(S.concat);
         };
       };
       intercalate = function(S) {
-        var concatAllS = concatAll3(S);
+        var concatAllS = concatAll(S);
         return function(middle) {
           return flow(intersperse(middle), concatAllS);
         };
@@ -732,7 +620,7 @@ var vaultify = (() => {
       };
       sortBy = function(ords) {
         if (isNonEmpty3(ords)) {
-          var M = getMonoid2();
+          var M = getMonoid();
           return sort(ords.reduce(M.concat, M.empty));
         }
         return copy;
@@ -1301,7 +1189,7 @@ var vaultify = (() => {
     getDifferenceMagma: () => getDifferenceMagma,
     getEq: () => getEq3,
     getIntersectionSemigroup: () => getIntersectionSemigroup,
-    getMonoid: () => getMonoid3,
+    getMonoid: () => getMonoid2,
     getOrd: () => getOrd2,
     getSemigroup: () => getSemigroup3,
     getShow: () => getShow3,
@@ -1346,7 +1234,7 @@ var vaultify = (() => {
     reduceRightWithIndex: () => reduceRightWithIndex3,
     reduceWithIndex: () => reduceWithIndex3,
     replicate: () => replicate,
-    reverse: () => reverse2,
+    reverse: () => reverse,
     rights: () => rights,
     rotate: () => rotate3,
     scanLeft: () => scanLeft,
@@ -1478,7 +1366,7 @@ var vaultify = (() => {
       });
     };
   }
-  var isEmpty, isNonEmpty5, prepend3, prependW3, append3, appendW3, makeBy3, replicate, fromOption, fromEither, matchW2, match2, matchLeftW, matchLeft, foldLeft, matchRightW, matchRight, foldRight, chainWithIndex, scanLeft, scanRight, size, isOutOfBound4, lookup2, head5, last5, tail4, init3, takeLeft, takeRight, spanLeftIndex, dropLeft, dropRight, findIndex2, findFirstMap2, findLastMap2, findLastIndex2, copy2, insertAt, updateAt, deleteAt, modifyAt, reverse2, rights, lefts, sort2, zipWith, unzip, prependAll3, intersperse3, rotate3, elem2, uniq3, sortBy3, chop3, splitAt3, chunksOf3, fromOptionK, concatW, concat2, _map, _mapWithIndex, _ap, _filter, _filterMap, _partition, _partitionMap, _partitionWithIndex, _partitionMapWithIndex, _alt, _reduce, _foldMap, _reduceRight, _reduceWithIndex, _foldMapWithIndex, _reduceRightWithIndex, _filterMapWithIndex, _filterWithIndex, _extend, _traverse, _traverseWithIndex, _chainRecDepthFirst2, _chainRecBreadthFirst2, of3, zero, map, ap2, flatMap, flatten, mapWithIndex, filterMapWithIndex, filterMap, compact, separate, filter, partition, partitionWithIndex, partitionMap, partitionMapWithIndex, altW, alt, filterWithIndex, extend, duplicate, foldMap3, foldMapWithIndex3, reduce3, reduceWithIndex3, reduceRight3, reduceRightWithIndex3, traverse, sequence, traverseWithIndex, wither, wilt, unfold, URI, getShow3, getSemigroup3, getMonoid3, getEq3, getOrd2, getUnionSemigroup, getUnionMonoid, getIntersectionSemigroup, getDifferenceMagma, Functor, flap2, Pointed, FunctorWithIndex, Apply, apFirst2, apSecond2, Applicative, Chain, chainFirst2, Monad, Unfoldable, Alt, Zero, guard2, Alternative, Extend, Compactable, Filterable, FilterableWithIndex, Foldable, FoldableWithIndex, Traversable, TraversableWithIndex, _wither, _wilt, Witherable, chainRecDepthFirst2, ChainRecDepthFirst, chainRecBreadthFirst2, ChainRecBreadthFirst, filterE2, FromEither, fromEitherK2, unsafeInsertAt3, unsafeUpdateAt3, unsafeDeleteAt, every2, some2, exists, intercalate3, Do, bindTo2, let_2, bind2, apS2, chain, range3, empty2, cons3, snoc3, prependToAll, array;
+  var isEmpty, isNonEmpty5, prepend3, prependW3, append3, appendW3, makeBy3, replicate, fromOption, fromEither, matchW2, match2, matchLeftW, matchLeft, foldLeft, matchRightW, matchRight, foldRight, chainWithIndex, scanLeft, scanRight, size, isOutOfBound4, lookup2, head5, last5, tail4, init3, takeLeft, takeRight, spanLeftIndex, dropLeft, dropRight, findIndex2, findFirstMap2, findLastMap2, findLastIndex2, copy2, insertAt, updateAt, deleteAt, modifyAt, reverse, rights, lefts, sort2, zipWith, unzip, prependAll3, intersperse3, rotate3, elem2, uniq3, sortBy3, chop3, splitAt3, chunksOf3, fromOptionK, concatW, concat2, _map, _mapWithIndex, _ap, _filter, _filterMap, _partition, _partitionMap, _partitionWithIndex, _partitionMapWithIndex, _alt, _reduce, _foldMap, _reduceRight, _reduceWithIndex, _foldMapWithIndex, _reduceRightWithIndex, _filterMapWithIndex, _filterWithIndex, _extend, _traverse, _traverseWithIndex, _chainRecDepthFirst2, _chainRecBreadthFirst2, of3, zero, map, ap2, flatMap, flatten, mapWithIndex, filterMapWithIndex, filterMap, compact, separate, filter, partition, partitionWithIndex, partitionMap, partitionMapWithIndex, altW, alt, filterWithIndex, extend, duplicate, foldMap3, foldMapWithIndex3, reduce3, reduceWithIndex3, reduceRight3, reduceRightWithIndex3, traverse, sequence, traverseWithIndex, wither, wilt, unfold, URI, getShow3, getSemigroup3, getMonoid2, getEq3, getOrd2, getUnionSemigroup, getUnionMonoid, getIntersectionSemigroup, getDifferenceMagma, Functor, flap2, Pointed, FunctorWithIndex, Apply, apFirst2, apSecond2, Applicative, Chain, chainFirst2, Monad, Unfoldable, Alt, Zero, guard2, Alternative, Extend, Compactable, Filterable, FilterableWithIndex, Foldable, FoldableWithIndex, Traversable, TraversableWithIndex, _wither, _wilt, Witherable, chainRecDepthFirst2, ChainRecDepthFirst, chainRecBreadthFirst2, ChainRecBreadthFirst, filterE2, FromEither, fromEitherK2, unsafeInsertAt3, unsafeUpdateAt3, unsafeDeleteAt, every2, some2, exists, intercalate3, Do, bindTo2, let_2, bind2, apS2, chain, range3, empty2, cons3, snoc3, prependToAll, array;
   var init_Array = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Array.js"() {
       init_Apply();
@@ -1635,7 +1523,7 @@ var vaultify = (() => {
           return isOutOfBound4(i, as3) ? none : some(unsafeUpdateAt3(i, f(as3[i]), as3));
         };
       };
-      reverse2 = function(as3) {
+      reverse = function(as3) {
         return isEmpty(as3) ? [] : as3.slice().reverse();
       };
       rights = function(as3) {
@@ -2022,7 +1910,7 @@ var vaultify = (() => {
           }
         };
       };
-      getMonoid3 = function() {
+      getMonoid2 = function() {
         return {
           concat: getSemigroup3().concat,
           empty: []
@@ -2375,7 +2263,7 @@ var vaultify = (() => {
     getFirstMonoid: () => getFirstMonoid,
     getLastMonoid: () => getLastMonoid,
     getLeft: () => getLeft,
-    getMonoid: () => getMonoid4,
+    getMonoid: () => getMonoid3,
     getOrElse: () => getOrElse,
     getOrElseW: () => getOrElseW,
     getOrd: () => getOrd3,
@@ -2439,7 +2327,7 @@ var vaultify = (() => {
       return isSome2(getOption(a));
     };
   }
-  var none2, some3, getLeft, getRight, _map2, _ap2, _reduce2, _foldMap2, _reduceRight2, _traverse2, _alt2, _filter2, _filterMap2, _extend2, _partition2, _partitionMap2, URI2, getShow4, getEq4, getOrd3, getMonoid4, map2, Functor2, as2, asUnit2, of4, Pointed2, ap3, Apply2, Applicative2, flatMap2, Chain2, Monad2, reduce4, foldMap4, reduceRight4, Foldable2, orElse, altW2, alt2, Alt2, zero2, Zero2, guard3, Alternative2, extend2, Extend2, compact2, defaultSeparated, separate2, Compactable2, filter2, filterMap2, partition2, partitionMap2, Filterable2, traverse2, sequence2, Traversable2, _wither2, _wilt2, wither2, wilt2, Witherable2, throwError, MonadThrow, fromEither2, FromEither2, isSome2, isNone2, matchW3, foldW, match3, fold, getOrElseW, getOrElse, flap3, apFirst3, apSecond3, flatten2, tap2, tapEither2, duplicate2, fromEitherK3, chainEitherK2, chainFirstEitherK, fromNullable, tryCatch, tryCatchK, fromNullableK, chainNullableK, toNullable, toUndefined, exists2, Do2, bindTo3, let_3, bind3, apS3, ApT, traverseReadonlyNonEmptyArrayWithIndex, traverseReadonlyArrayWithIndex, traverseArrayWithIndex, traverseArray, sequenceArray, chain2, chainFirst3, mapNullable, option, getApplySemigroup2, getApplyMonoid, getFirstMonoid, getLastMonoid;
+  var none2, some3, getLeft, getRight, _map2, _ap2, _reduce2, _foldMap2, _reduceRight2, _traverse2, _alt2, _filter2, _filterMap2, _extend2, _partition2, _partitionMap2, URI2, getShow4, getEq4, getOrd3, getMonoid3, map2, Functor2, as2, asUnit2, of4, Pointed2, ap3, Apply2, Applicative2, flatMap2, Chain2, Monad2, reduce4, foldMap4, reduceRight4, Foldable2, orElse, altW2, alt2, Alt2, zero2, Zero2, guard3, Alternative2, extend2, Extend2, compact2, defaultSeparated, separate2, Compactable2, filter2, filterMap2, partition2, partitionMap2, Filterable2, traverse2, sequence2, Traversable2, _wither2, _wilt2, wither2, wilt2, Witherable2, throwError, MonadThrow, fromEither2, FromEither2, isSome2, isNone2, matchW3, foldW, match3, fold, getOrElseW, getOrElse, flap3, apFirst3, apSecond3, flatten2, tap2, tapEither2, duplicate2, fromEitherK3, chainEitherK2, chainFirstEitherK, fromNullable, tryCatch, tryCatchK, fromNullableK, chainNullableK, toNullable, toUndefined, exists2, Do2, bindTo3, let_3, bind3, apS3, ApT, traverseReadonlyNonEmptyArrayWithIndex, traverseReadonlyArrayWithIndex, traverseArrayWithIndex, traverseArray, sequenceArray, chain2, chainFirst3, mapNullable, option, getApplySemigroup2, getApplyMonoid, getFirstMonoid, getLastMonoid;
   var init_Option = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Option.js"() {
       init_Applicative();
@@ -2527,7 +2415,7 @@ var vaultify = (() => {
           }
         };
       };
-      getMonoid4 = function(S) {
+      getMonoid3 = function(S) {
         return {
           concat: function(x, y) {
             return isNone2(x) ? y : isNone2(y) ? x : some3(S.concat(x.value, y.value));
@@ -2882,31 +2770,10 @@ var vaultify = (() => {
       getApplySemigroup2 = /* @__PURE__ */ getApplySemigroup(Apply2);
       getApplyMonoid = /* @__PURE__ */ getApplicativeMonoid(Applicative2);
       getFirstMonoid = function() {
-        return getMonoid4(first());
+        return getMonoid3(first());
       };
       getLastMonoid = function() {
-        return getMonoid4(last());
-      };
-    }
-  });
-
-  // .yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Endomorphism.js
-  var getSemigroup4, getMonoid5;
-  var init_Endomorphism = __esm({
-    ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Endomorphism.js"() {
-      init_function();
-      getSemigroup4 = function() {
-        return {
-          concat: function(first2, second) {
-            return flow(first2, second);
-          }
-        };
-      };
-      getMonoid5 = function() {
-        return {
-          concat: getSemigroup4().concat,
-          empty: identity
-        };
+        return getMonoid3(last());
       };
     }
   });
@@ -2917,43 +2784,8 @@ var vaultify = (() => {
     }
   });
 
-  // .yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Monoid.js
-  var concatAll4, monoidVoid, monoidAll, monoidAny, monoidString, monoidSum, monoidProduct;
-  var init_Monoid = __esm({
-    ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Monoid.js"() {
-      init_Semigroup();
-      concatAll4 = function(M) {
-        return concatAll2(M)(M.empty);
-      };
-      monoidVoid = {
-        concat: semigroupVoid.concat,
-        empty: void 0
-      };
-      monoidAll = {
-        concat: semigroupAll.concat,
-        empty: true
-      };
-      monoidAny = {
-        concat: semigroupAny.concat,
-        empty: false
-      };
-      monoidString = {
-        concat: semigroupString.concat,
-        empty: ""
-      };
-      monoidSum = {
-        concat: semigroupSum.concat,
-        empty: 0
-      };
-      monoidProduct = {
-        concat: semigroupProduct.concat,
-        empty: 1
-      };
-    }
-  });
-
   // .yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/string.js
-  var Eq2, Semigroup, empty3, Monoid, Ord2;
+  var Eq2, Semigroup, empty3, Monoid, Ord2, startsWith;
   var init_string = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/string.js"() {
       Eq2 = {
@@ -2977,6 +2809,11 @@ var vaultify = (() => {
           return first2 < second ? -1 : first2 > second ? 1 : 0;
         }
       };
+      startsWith = function(searchString, position) {
+        return function(s) {
+          return s.startsWith(searchString, position);
+        };
+      };
     }
   });
 
@@ -2996,48 +2833,10 @@ var vaultify = (() => {
   });
 
   // .yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Record.js
-  function collect(O) {
-    if (typeof O === "function") {
-      return collect(Ord2)(O);
-    }
-    var keysO = keys_(O);
-    return function(f) {
-      return function(r) {
-        var out = [];
-        for (var _i = 0, _a = keysO(r); _i < _a.length; _i++) {
-          var key = _a[_i];
-          out.push(f(key, r[key]));
-        }
-        return out;
-      };
-    };
-  }
-  function toUnfoldable(U) {
-    return function(r) {
-      var sas = toArray(r);
-      var len = sas.length;
-      return U.unfold(0, function(b) {
-        return b < len ? some([sas[b], b + 1]) : none;
-      });
-    };
-  }
-  var keys_, toArray, lookup4;
+  var lookup4;
   var init_Record = __esm({
     ".yarn/cache/fp-ts-npm-2.16.1-8deb3ec2d6-94e8bb1d03.zip/node_modules/fp-ts/es6/Record.js"() {
-      init_internal();
       init_ReadonlyRecord();
-      init_string();
-      keys_ = function(O) {
-        return function(r) {
-          return Object.keys(r).sort(O.compare);
-        };
-      };
-      toArray = /* @__PURE__ */ collect(Ord2)(function(k, a) {
-        return [
-          k,
-          a
-        ];
-      });
       lookup4 = lookup3;
     }
   });
@@ -3052,497 +2851,58 @@ var vaultify = (() => {
   });
 
   // src/api.tsx
-  var fetchPlaylistAPI, fetchLikedPlaylistsSP, likePlaylist, createPlaylist, createFolder;
+  var fetchPlaylistEnhancedSongs100, fetchPlaylistEnhancedSongs;
   var init_api = __esm({
     "src/api.tsx"() {
       "use strict";
-      fetchPlaylistAPI = (uri) => __async(void 0, null, function* () {
-        return (yield Spicetify.Platform.PlaylistAPI.getContents(uri)).items;
+      fetchPlaylistEnhancedSongs100 = (uri, offset = 0) => __async(void 0, null, function* () {
+        return (yield Spicetify.CosmosAsync.get(`https://spclient.wg.spotify.com/enhanced-view/v1/context/${uri}?&offset=${offset}&format=json`)).pageItems;
       });
-      fetchLikedPlaylistsSP = () => Spicetify.CosmosAsync.get("sp://core-playlist/v1/rootlist");
-      likePlaylist = (uri) => Spicetify.Platform.RootlistAPI.add([uri]);
-      createPlaylist = (playlist) => Spicetify.CosmosAsync.post("sp://core-playlist/v1/rootlist", {
-        operation: "create",
-        playlist: true,
-        uris: playlist.uris,
-        name: playlist.name
+      fetchPlaylistEnhancedSongs = (uri, offset = 0) => __async(void 0, null, function* () {
+        const nextPageItems = yield fetchPlaylistEnhancedSongs100(uri, offset);
+        if ((nextPageItems == null ? void 0 : nextPageItems.length) < 100)
+          return nextPageItems;
+        else
+          return nextPageItems.concat(fetch);
       });
-      createFolder = Spicetify.Platform.RootlistAPI.createFolder;
     }
   });
 
-  // .yarn/__virtual__/fp-ts-std-virtual-156a7ad1ed/0/cache/fp-ts-std-npm-0.17.1-8c0fa4fe44-c9e2cba727.zip/node_modules/fp-ts-std/dist/esm/Function.js
-  var URI3, map4, Functor3, of5, ap4, Applicative3, apFirst4, apSecond4, chain3, Monad3, Do3, bindTo4, bind4, apS4, let_4, unary, guard4, unless, when, invoke, invokeNullary, curry2T, curry2, curry3T, curry3, curry4T, curry4, curry5T, curry5, applyEvery;
-  var init_Function = __esm({
-    ".yarn/__virtual__/fp-ts-std-virtual-156a7ad1ed/0/cache/fp-ts-std-npm-0.17.1-8c0fa4fe44-c9e2cba727.zip/node_modules/fp-ts-std/dist/esm/Function.js"() {
-      init_Option();
-      init_Array();
-      init_function();
-      init_Predicate();
-      init_Endomorphism();
-      init_Monoid();
-      init_Semigroup();
-      init_Functor();
-      init_Apply();
-      init_Chain();
-      URI3 = "Function";
-      map4 = (f) => (g) => flow(g, f);
-      Functor3 = {
-        URI: URI3,
-        map: (f, g) => map4(g)(f)
-      };
-      of5 = constant;
-      ap4 = (f) => (g) => (x) => g(x)(f(x));
-      Applicative3 = __spreadProps(__spreadValues({}, Functor3), {
-        of: of5,
-        ap: (f, g) => ap4(g)(f)
-      });
-      apFirst4 = apFirst(Applicative3);
-      apSecond4 = apSecond(Applicative3);
-      chain3 = (f) => (g) => (x) => f(g(x))(x);
-      Monad3 = __spreadProps(__spreadValues({}, Applicative3), {
-        chain: (f, g) => chain3(g)(f)
-      });
-      Do3 = of5({});
-      bindTo4 = bindTo(Functor3);
-      bind4 = bind(Monad3);
-      apS4 = apS(Applicative3);
-      let_4 = let_(Functor3);
-      unary = tupled;
-      guard4 = (branches) => (fallback) => (input) => pipe(branches, map(([f, g]) => flow(fromPredicate2(f), map2(g))), concatAll4(getMonoid(getMonoid4(first()))()), apply(input), getOrElse(() => fallback(input)));
-      unless = (f) => (onFalse) => (x) => f(x) ? x : onFalse(x);
-      when = flow(not, unless);
-      invoke = (x) => (ys) => (z) => z[x](...ys);
-      invokeNullary = flip(invoke)([]);
-      curry2T = (f) => (a) => (b) => f([a, b]);
-      curry2 = flow(unary, curry2T);
-      curry3T = (f) => (a) => (b) => (c) => f([a, b, c]);
-      curry3 = flow(unary, curry3T);
-      curry4T = (f) => (a) => (b) => (c) => (d) => f([a, b, c, d]);
-      curry4 = flow(unary, curry4T);
-      curry5T = (f) => (a) => (b) => (c) => (d) => (e) => f([a, b, c, d, e]);
-      curry5 = flow(unary, curry5T);
-      applyEvery = concatAll4(getMonoid5());
-    }
-  });
-
-  // src/fp.tsx
-  var guard22, guard32;
-  var init_fp = __esm({
-    "src/fp.tsx"() {
+  // src/util.tsx
+  var init_util = __esm({
+    "src/util.tsx"() {
       "use strict";
-      init_Function();
-      guard22 = (branches) => guard4(branches);
-      guard32 = (branches) => guard4(
-        branches
-      );
-    }
-  });
-
-  // external-global-plugin:react
-  var require_react = __commonJS({
-    "external-global-plugin:react"(exports, module) {
-      module.exports = Spicetify.React;
-    }
-  });
-
-  // external-global-plugin:react-dom
-  var require_react_dom = __commonJS({
-    "external-global-plugin:react-dom"(exports, module) {
-      module.exports = Spicetify.ReactDOM;
-    }
-  });
-
-  // .yarn/cache/spcr-settings-npm-1.2.0-849a2f9552-a422be2118.zip/node_modules/spcr-settings/settings.module.css
-  var settings_module_default;
-  var init_settings_module = __esm({
-    ".yarn/cache/spcr-settings-npm-1.2.0-849a2f9552-a422be2118.zip/node_modules/spcr-settings/settings.module.css"() {
-      settings_module_default = {};
-    }
-  });
-
-  // .yarn/cache/spcr-settings-npm-1.2.0-849a2f9552-a422be2118.zip/node_modules/spcr-settings/settingsSection.tsx
-  var import_react, import_react_dom, SettingsSection;
-  var init_settingsSection = __esm({
-    ".yarn/cache/spcr-settings-npm-1.2.0-849a2f9552-a422be2118.zip/node_modules/spcr-settings/settingsSection.tsx"() {
-      import_react = __toESM(require_react());
-      import_react_dom = __toESM(require_react_dom());
-      init_settings_module();
-      SettingsSection = class {
-        constructor(name, settingsId, initialSettingsFields = {}) {
-          this.name = name;
-          this.settingsId = settingsId;
-          this.initialSettingsFields = initialSettingsFields;
-          __publicField(this, "settingsFields", this.initialSettingsFields);
-          __publicField(this, "stopHistoryListener");
-          __publicField(this, "setRerender", null);
-          __publicField(this, "buttonClassnames", null);
-          __publicField(this, "pushSettings", () => __async(this, null, function* () {
-            var _a, _b;
-            Object.entries(this.settingsFields).forEach(([nameId, field]) => {
-              if (field.type !== "button" && this.getFieldValue(nameId) === void 0) {
-                this.setFieldValue(nameId, field.defaultValue);
-              }
-            });
-            while (!((_b = (_a = Spicetify == null ? void 0 : Spicetify.Platform) == null ? void 0 : _a.History) == null ? void 0 : _b.listen)) {
-              yield new Promise((resolve) => setTimeout(resolve, 100));
-            }
-            if (this.stopHistoryListener)
-              this.stopHistoryListener();
-            this.stopHistoryListener = Spicetify.Platform.History.listen((e) => {
-              if (e.pathname === "/preferences") {
-                this.render();
-              }
-            });
-            if (Spicetify.Platform.History.location.pathname === "/preferences") {
-              yield this.render();
-            }
-          }));
-          __publicField(this, "rerender", () => {
-            if (this.setRerender) {
-              this.setRerender(Math.random());
-            }
-          });
-          __publicField(this, "render", () => __async(this, null, function* () {
-            var _a, _b;
-            while (!document.getElementById("desktop.settings.selectLanguage")) {
-              if (Spicetify.Platform.History.location.pathname !== "/preferences")
-                return;
-              yield new Promise((resolve) => setTimeout(resolve, 100));
-            }
-            const allSettingsContainer = document.querySelector(
-              ".main-view-container__scroll-node-child main div"
-            );
-            if (!allSettingsContainer)
-              return console.error("[spcr-settings] settings container not found");
-            this.buttonClassnames = (_b = (_a = Array.from(allSettingsContainer.querySelectorAll(":scope > button")).at(
-              -1
-            )) == null ? void 0 : _a.className) != null ? _b : null;
-            let pluginSettingsContainer = Array.from(
-              allSettingsContainer.children
-            ).find((child) => child.id === this.settingsId);
-            if (!pluginSettingsContainer) {
-              pluginSettingsContainer = document.createElement("div");
-              pluginSettingsContainer.id = this.settingsId;
-              pluginSettingsContainer.className = settings_module_default.settingsContainer;
-              allSettingsContainer.appendChild(pluginSettingsContainer);
-            } else {
-              console.log(pluginSettingsContainer);
-            }
-            import_react_dom.default.render(/* @__PURE__ */ import_react.default.createElement(this.FieldsContainer, null), pluginSettingsContainer);
-          }));
-          __publicField(this, "addButton", (nameId, description, value, onClick, events) => {
-            this.settingsFields[nameId] = {
-              type: "button",
-              description,
-              value,
-              events: __spreadValues({
-                onClick
-              }, events)
-            };
-          });
-          __publicField(this, "addInput", (nameId, description, defaultValue, onChange, inputType, events) => {
-            this.settingsFields[nameId] = {
-              type: "input",
-              description,
-              defaultValue,
-              inputType,
-              events: __spreadValues({
-                onChange
-              }, events)
-            };
-          });
-          __publicField(this, "addHidden", (nameId, defaultValue) => {
-            this.settingsFields[nameId] = {
-              type: "hidden",
-              defaultValue
-            };
-          });
-          __publicField(this, "addToggle", (nameId, description, defaultValue, onChange, events) => {
-            this.settingsFields[nameId] = {
-              type: "toggle",
-              description,
-              defaultValue,
-              events: __spreadValues({
-                onChange
-              }, events)
-            };
-          });
-          __publicField(this, "addDropDown", (nameId, description, options, defaultIndex, onSelect, events) => {
-            this.settingsFields[nameId] = {
-              type: "dropdown",
-              description,
-              defaultValue: options[defaultIndex],
-              options,
-              events: __spreadValues({
-                onSelect
-              }, events)
-            };
-          });
-          __publicField(this, "getFieldValue", (nameId) => {
-            var _a;
-            return (_a = JSON.parse(
-              Spicetify.LocalStorage.get(`${this.settingsId}.${nameId}`) || "{}"
-            )) == null ? void 0 : _a.value;
-          });
-          __publicField(this, "setFieldValue", (nameId, newValue) => {
-            Spicetify.LocalStorage.set(
-              `${this.settingsId}.${nameId}`,
-              JSON.stringify({ value: newValue })
-            );
-          });
-          __publicField(this, "FieldsContainer", () => {
-            const [rerender, setRerender] = (0, import_react.useState)(0);
-            this.setRerender = setRerender;
-            return /* @__PURE__ */ import_react.default.createElement("div", { className: settings_module_default.settingsContainer, key: rerender }, /* @__PURE__ */ import_react.default.createElement(
-              "h2",
-              {
-                className: ["main-shelf-title main-type-cello", settings_module_default.heading].join(
-                  " "
-                )
-              },
-              this.name
-            ), Object.entries(this.settingsFields).map(([nameId, field]) => {
-              return /* @__PURE__ */ import_react.default.createElement(this.Field, { nameId, field });
-            }));
-          });
-          __publicField(this, "Field", (props) => {
-            var _a;
-            const id = `${this.settingsId}.${props.nameId}`;
-            let defaultStateValue;
-            if (props.field.type === "button") {
-              defaultStateValue = props.field.value;
-            } else {
-              defaultStateValue = this.getFieldValue(props.nameId);
-            }
-            if (props.field.type === "hidden") {
-              return /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null);
-            }
-            const [value, setValueState] = (0, import_react.useState)(defaultStateValue);
-            const setValue = (newValue) => {
-              if (newValue !== void 0) {
-                setValueState(newValue);
-                this.setFieldValue(props.nameId, newValue);
-              }
-            };
-            return /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null, /* @__PURE__ */ import_react.default.createElement(
-              "div",
-              {
-                className: "main-type-mesto",
-                style: { color: "var(--spice-subtext)" }
-              },
-              /* @__PURE__ */ import_react.default.createElement("label", { className: settings_module_default.description, htmlFor: id }, props.field.description || "")
-            ), /* @__PURE__ */ import_react.default.createElement(
-              "span",
-              {
-                className: ["x-settings-secondColumn", settings_module_default.inputWrapper].join(" ")
-              },
-              props.field.type === "input" ? /* @__PURE__ */ import_react.default.createElement(
-                "input",
-                __spreadProps(__spreadValues({
-                  className: "main-dropDown-dropDown",
-                  id,
-                  dir: "ltr",
-                  value,
-                  type: props.field.inputType || "text"
-                }, props.field.events), {
-                  onChange: (e) => {
-                    var _a2;
-                    setValue(e.currentTarget.value);
-                    const onChange = (_a2 = props.field.events) == null ? void 0 : _a2.onChange;
-                    if (onChange)
-                      onChange(e);
-                  }
-                })
-              ) : props.field.type === "button" ? /* @__PURE__ */ import_react.default.createElement("span", { className: "" }, /* @__PURE__ */ import_react.default.createElement(
-                "button",
-                __spreadProps(__spreadValues({
-                  id,
-                  className: (_a = this.buttonClassnames) != null ? _a : ""
-                }, props.field.events), {
-                  onClick: (e) => {
-                    var _a2;
-                    setValue();
-                    const onClick = (_a2 = props.field.events) == null ? void 0 : _a2.onClick;
-                    if (onClick)
-                      onClick(e);
-                  },
-                  type: "button"
-                }),
-                value
-              )) : props.field.type === "toggle" ? /* @__PURE__ */ import_react.default.createElement("label", { className: "x-toggle-wrapper x-settings-secondColumn" }, /* @__PURE__ */ import_react.default.createElement(
-                "input",
-                __spreadProps(__spreadValues({
-                  id,
-                  className: "x-toggle-input",
-                  type: "checkbox",
-                  checked: value
-                }, props.field.events), {
-                  onClick: (e) => {
-                    var _a2;
-                    setValue(e.currentTarget.checked);
-                    const onClick = (_a2 = props.field.events) == null ? void 0 : _a2.onClick;
-                    if (onClick)
-                      onClick(e);
-                  }
-                })
-              ), /* @__PURE__ */ import_react.default.createElement("span", { className: "x-toggle-indicatorWrapper" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "x-toggle-indicator" }))) : props.field.type === "dropdown" ? /* @__PURE__ */ import_react.default.createElement(
-                "select",
-                __spreadProps(__spreadValues({
-                  className: "main-dropDown-dropDown",
-                  id
-                }, props.field.events), {
-                  onChange: (e) => {
-                    var _a2;
-                    setValue(
-                      props.field.options[e.currentTarget.selectedIndex]
-                    );
-                    const onChange = (_a2 = props.field.events) == null ? void 0 : _a2.onChange;
-                    if (onChange)
-                      onChange(e);
-                  }
-                }),
-                props.field.options.map((option2, i) => {
-                  return /* @__PURE__ */ import_react.default.createElement("option", { selected: option2 === value, value: i + 1 }, option2);
-                })
-              ) : /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null)
-            ));
-          });
-        }
-      };
-    }
-  });
-
-  // src/settings.tsx
-  var settings_exports = {};
-  var settings;
-  var init_settings = __esm({
-    "src/settings.tsx"() {
-      "use strict";
-      init_settingsSection();
-      init_app();
-      settings = new SettingsSection("Vaultify", "vaultify");
-      settings.addButton(
-        "backup",
-        "Backup Playlists and Settings",
-        "Backup to clipboard",
-        backup
-      );
-      settings.addButton(
-        "restorePlaylistData",
-        "Restore Playlists",
-        "Restore from clipboard",
-        restore("playlistData")
-      );
-      settings.addButton(
-        "restoreAppData",
-        "Restore Settings",
-        "Restore from clipboard",
-        restore("appData")
-      );
-      settings.pushSettings();
     }
   });
 
   // src/app.tsx
   var app_exports = {};
   __export(app_exports, {
-    backup: () => backup,
-    default: () => app_default,
-    restore: () => restore
+    default: () => app_default
   });
-  var app_default, extractLikedPlaylistTreeRecur, restorePlaylistseRecur, backup, restore;
+  var app_default, queue, playEnhancedSongs, showIn;
   var init_app = __esm({
     "src/app.tsx"() {
       "use strict";
       init_es6();
-      init_Array();
-      init_Option();
-      init_Record();
       init_function();
+      init_string();
       init_api();
-      init_fp();
+      init_util();
       app_default = {};
-      extractLikedPlaylistTreeRecur = (leaf) => guard22([
-        [
-          (leaf2) => leaf2.type === "playlist",
-          (playlist) => __async(void 0, null, function* () {
-            return playlist.ownedBySelf ? {
-              type: "playlist personal",
-              name: playlist.name,
-              uris: yield pipe(
-                playlist.link,
-                fetchPlaylistAPI,
-                (x) => __async(void 0, null, function* () {
-                  return pipe(
-                    yield x,
-                    map(flow(lookup4("uri"))),
-                    Array_exports.sequence(Option_exports.Applicative),
-                    getOrElse(() => [])
-                  );
-                })
-              )
-            } : {
-              type: "playlist liked",
-              name: playlist.name,
-              uri: playlist.link
-            };
-          })
-        ],
-        [
-          (leaf2) => leaf2.type === "folder",
-          (folder) => __async(void 0, null, function* () {
-            return {
-              type: folder.type,
-              name: folder.name,
-              uris: folder.rows ? yield pipe(
-                folder.rows,
-                map(extractLikedPlaylistTreeRecur),
-                (x) => Promise.all(x)
-              ) : []
-            };
-          })
-        ]
-      ])(constant(Promise.resolve({})))(leaf);
-      restorePlaylistseRecur = (leaf) => __async(void 0, null, function* () {
-        guard32([
-          [
-            (leaf2) => leaf2.type === "playlist personal",
-            createPlaylist
-          ],
-          [
-            (leaf2) => leaf2.type === "playlist liked",
-            (playlist) => likePlaylist(playlist.uri)
-          ],
-          [
-            (leaf2) => leaf2.type === "folder",
-            (folder) => createFolder(folder.name) && map(restorePlaylistseRecur)(folder.uris)
-          ]
-        ])(constant(void 0))(leaf);
+      queue = new Array();
+      playEnhancedSongs = (uri) => __async(void 0, null, function* () {
+        queue = yield fetchPlaylistEnhancedSongs(uri);
+        Spicetify.Platform.PlayerAPI.clearQueue();
+        Spicetify.Platform.PlayerAPI.addToQueue(queue);
       });
-      backup = () => __async(void 0, null, function* () {
-        const playlistData = yield pipe(
-          yield fetchLikedPlaylistsSP(),
-          extractLikedPlaylistTreeRecur
-        );
-        const appData = toUnfoldable(Array_exports)(localStorage);
-        yield Spicetify.Platform.ClipboardAPI.copy(
-          JSON.stringify({ playlistData, appData })
-        );
-        Spicetify.showNotification("Backed up Playlists and Settings");
-      });
-      restore = (mode) => () => __async(void 0, null, function* () {
-        let vault = JSON.parse(yield Spicetify.Platform.ClipboardAPI.paste());
-        if (mode === "playlistData") {
-          yield restorePlaylistseRecur(vault.playlistData);
-          Spicetify.showNotification("Restored Playlists");
-        }
-        if (mode === "appData") {
-          map(tupled(Spicetify.LocalStorage.set))(vault.appData);
-          Spicetify.showNotification("Restored Settings");
-        }
-      });
-      Promise.resolve().then(() => init_settings());
+      showIn = (allowedTypes) => ([uri]) => pipe(allowedTypes, Array_exports.some(flip(startsWith)(uri)));
+      new Spicetify.ContextMenu.Item(
+        "Play enhanced songs",
+        tupled(playEnhancedSongs),
+        showIn(["spotify:playlist" /* PLAYLIST */]),
+        "enhance"
+      ).register();
     }
   });
 
@@ -3551,12 +2911,7 @@ var vaultify = (() => {
   init_Record();
   init_function();
   (() => __async(void 0, null, function* () {
-    const mustLoad = [
-      "CosmosAsync",
-      "LocalStorage",
-      "Platform",
-      "showNotification"
-    ];
+    const mustLoad = ["ContextMenu", "CosmosAsync", "Platform"];
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     let timer = 0;
     while (mustLoad.some(flow(flip(lookup4)(Spicetify), Option_exports.isNone)))
@@ -3564,30 +2919,3 @@ var vaultify = (() => {
     yield Promise.resolve().then(() => (init_app(), app_exports));
   }))();
 })();
-(async () => {
-                if (!document.getElementById(`vaultify`)) {
-                    var el = document.createElement("style")
-                    el.id = `vaultify`
-                    el.textContent = String.raw`/* .yarn/cache/spcr-settings-npm-1.2.0-849a2f9552-a422be2118.zip/node_modules/spcr-settings/settings.module.css */
-.settingsContainer {
-  display: contents;
-}
-.heading {
-  grid-column: 1/-1;
-  font-size: 1.125rem;
-  line-height: 1.5rem;
-  color: #fff;
-  margin-top: 24px;
-}
-.description {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-.inputWrapper {
-  display: flex;
-  justify-self: end;
-}
-`.trim()
-                    document.head.appendChild(el)
-                }
-            })()

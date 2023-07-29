@@ -1,10 +1,9 @@
 export default {}
 import { array as a, array, option as o } from "fp-ts"
-import { unary } from "fp-ts-std/Function"
 import { map } from "fp-ts/Array"
 import { getOrElse } from "fp-ts/Option"
 import { lookup, toUnfoldable } from "fp-ts/Record"
-import { constant, flow as f, pipe as p } from "fp-ts/function"
+import { constant, flow as f, pipe as p, tupled } from "fp-ts/function"
 import {
     createFolder,
     createPlaylist,
@@ -109,7 +108,7 @@ export const restore = (mode: "playlistData" | "appData") => async () => {
         Spicetify.showNotification("Restored Playlists")
     }
     if (mode === "appData") {
-        map(unary(Spicetify.LocalStorage.set))(vault.appData)
+        map(tupled(Spicetify.LocalStorage.set))(vault.appData)
         Spicetify.showNotification("Restored Settings")
     }
 }

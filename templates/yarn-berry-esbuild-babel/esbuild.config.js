@@ -27,13 +27,16 @@ const afterBuild = () => {
                     el.textContent = String.raw\`${css}\`.trim()
                     document.head.appendChild(el)
                 }
-            })()`.trim(),
+            })()`,
         )
     }
 }
 
 await esbuild.build({
     entryPoints: [entryJs],
+    minify: false,
+    sourcemap: true,
+    target: "es2017",
     outfile: outJs,
     platform: "browser",
     external: ["react", "react-dom"],

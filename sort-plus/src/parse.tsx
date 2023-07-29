@@ -1,17 +1,40 @@
-import { TrackParser } from "./util"
+import { fetchAlbumGQLRes } from "./api"
+import { SpotifyURI } from "./util"
 
-export const parseTrackFromAlbum: TrackParser = track => ({
-    albumName: undefined, // gets filled in later
-    albumUri: undefined, // gets filled in later
-    artistName: track.artists.items[0].profile.name,
-    artistUri: track.artists.items[0].uri,
-    durationMilis: track.duration.totalMilliseconds,
-    name: track.name,
-    playcount: track.playcount,
-    popularity: undefined,
-    releaseDate: undefined, // gets filled in later
-    uri: track.uri,
-})
+export type TrackData = {
+    albumName?: string
+    albumUri?: SpotifyURI
+    artistName: string
+    artistUri: SpotifyURI
+    durationMilis: number
+    name: string
+    playcount?: number
+    popularity?: number
+    releaseDate?: string
+    uri: SpotifyURI
+    lastfmPlaycount?: number
+    scrobbles?: number
+    personalScrobbles?: number
+}
+
+export type UnparsedTrack = any
+export type TrackParser = (track: UnparsedTrack) => TrackData
+export type TracksPopulater = (tracks: TrackData[]) => Promise<TrackData[]>
+
+export type fetchAlbumGQLResTrack = fetchAlbumGQLRes["tracks"]["items"][0]
+export const parseTrackFromAlbum = ({ track }: fetchAlbumGQLResTrack) =>
+    ({
+        albumName: undefined, // gets filled in later
+        albumUri: undefined, // gets filled in later
+        artistName: track.artists.items[0].profile.name,
+        artistUri: track.artists.items[0].uri,
+        durationMilis: track.duration.totalMilliseconds,
+        name: track.name,
+        playcount: Number(track.playcount),
+        popularity: undefined,
+        releaseDate: undefined, // gets filled in later
+        uri: track.uri,
+    } as TrackData)
 
 export const parseTopTrackFromArtist: TrackParser = track => ({
     albumUri: track.albumOfTrack.uri,

@@ -1,23 +1,6 @@
 export type SpotifyID = string
+
 export type SpotifyURI = string
-
-export type TrackData = {
-    albumName?: string
-    albumUri?: SpotifyURI
-    artistName: string
-    artistUri: SpotifyURI
-    durationMilis: number
-    name: string
-    playcount?: number
-    popularity?: number
-    releaseDate?: string
-    uri: SpotifyURI
-    lastfmPlaycount?: number
-    scrobbles?: number
-    personalScrobbles?: number
-}
-
-export type TrackParser = (track: any) => TrackData
 
 export const enum SpotifyURIType {
     TRACK = "spotify:track",
@@ -25,6 +8,11 @@ export const enum SpotifyURIType {
     ARTIST = "spotify:artist",
     PLAYLIST = "spotify:playlist",
 }
+
+export const parseUri = (uri: SpotifyURI) =>
+    uri.match(
+        /^(?<type>spotify:(?:artist|track|album|playlist))(?:_v2)?:(?<id>[a-zA-Z0-9_]{22})/,
+    )?.groups as { type: SpotifyURIType; id: SpotifyID }
 
 export const normalizeStr = (str: string) =>
     str

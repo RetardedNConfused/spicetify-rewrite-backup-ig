@@ -3,7 +3,6 @@ import _externalGlobalPlugin from "esbuild-plugin-external-global"
 const { externalGlobalPlugin } = _externalGlobalPlugin
 import fs from "fs"
 import path from "path"
-import babel from "esbuild-plugin-babel"
 import _name from "./package.json" assert { type: "json" }
 const name = _name.name.replaceAll("-", ".")
 
@@ -27,15 +26,17 @@ const afterBuild = () => {
                     el.textContent = String.raw\`${css}\`.trim()
                     document.head.appendChild(el)
                 }
-            })()`.trim(),
+            })()`,
         )
     }
 }
 
 await esbuild.build({
     entryPoints: [entryJs],
+    minify: false,
     outfile: outJs,
-    platform: "browser",
+    target: "es6",
+    //platform: "browser",
     external: ["react", "react-dom"],
     bundle: true,
     globalName: name,
@@ -43,27 +44,6 @@ await esbuild.build({
         externalGlobalPlugin({
             react: "Spicetify.React",
             "react-dom": "Spicetify.ReactDOM",
-        }),
-        babel({
-            filter: /.tsx/,
-            config: {
-                sourceMaps: "inline",
-                presets: [
-                    "@babel/env",
-                    "@babel/preset-react",
-                    "@babel/preset-typescript",
-                ],
-                plugins: [
-                    [
-                        "@babel/plugin-proposal-pipeline-operator",
-                        { proposal: "hack", topicToken: "%" },
-                    ],
-                    ["@babel/plugin-proposal-partial-application"],
-                    ["@babel/plugin-proposal-function-bind"],
-                    //   ["@babel/plugin-proposal-do-expressions"],
-                    //   ["@babel/plugin-proposal-async-do-expressions"],
-                ],
-            },
         }),
     ],
 })

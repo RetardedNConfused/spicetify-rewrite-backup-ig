@@ -1,12 +1,23 @@
-import { isNone } from "fp-ts/lib/Option"
-import { lookup } from "fp-ts/lib/ReadonlyRecord"
-import { flow } from "fp-ts/lib/function"
+import { option as o } from "fp-ts"
+import { lookup } from "fp-ts/Record"
+import { flow as f, flip } from "fp-ts/function"
 ;(async () => {
-    const mustLoad = ["showNotification"]
+    const mustLoad = [
+        "ContextMenu",
+        "CosmosAsync",
+        "GraphQL",
+        "Locale",
+        "Platform",
+        "Player",
+        "showNotification",
+    ]
 
-    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+    const sleep = (ms: number) =>
+        new Promise(resolve => setTimeout(resolve, ms))
 
-    while (mustLoad.map(flow(p => lookup(p)(Spicetify), isNone))) await sleep(100)
+    let timer = 0
+    while (mustLoad.some(f(flip(lookup)(Spicetify), o.isNone)))
+        await sleep((timer += 100))
 
     await import("./app")
 })()

@@ -1,10 +1,17 @@
 export default {}
-import { array as a, number, option as o, ord } from "fp-ts"
-import { guard, unary } from "fp-ts-std/Function"
+import { array as a, number, option as o, ord, task } from "fp-ts"
+import { guard } from "fp-ts-std/Function"
 import { values } from "fp-ts-std/Record"
 import { groupBy } from "fp-ts/NonEmptyArray"
-import { getUnionSemigroup, lookup, mapWithIndex, upsertAt } from "fp-ts/Record"
-import { constant, flow as f, identity, pipe as p } from "fp-ts/function"
+import { lookup, mapWithIndex } from "fp-ts/Record"
+import {
+    constant,
+    flow as f,
+    flip,
+    identity,
+    pipe as p,
+    tupled,
+} from "fp-ts/function"
 import { startsWith } from "fp-ts/string"
 import { Lens, Optional } from "monocle-ts"
 import {
@@ -15,7 +22,11 @@ import {
     fetchTrackLFMAPI,
     fetchTracksSpotAPI,
 } from "./api"
+import { async, objConcat } from "./fp"
 import {
+    TrackData,
+    TracksPopulater,
+    UnparsedTrack,
     parseTopTrackFromArtist,
     parseTrackFromAlbum,
     parseTrackFromArtistLikedTracksSP,
@@ -23,44 +34,46 @@ import {
     parseTrackFromSpotifyAPI,
 } from "./parse"
 import { CONFIG } from "./settings"
-import {
-    SortBy,
-    SortProp,
-    SpotifyID,
-    SpotifyURI,
-    SpotifyURIType,
-    TrackData,
-    TracksPopulater,
-    UnparsedTrack,
-} from "./util"
+import { SpotifyURI, SpotifyURIType, parseUri } from "./util"
+
+export enum SortBy {
+    SPOTIFY_PLAYCOUNT = "Spotify - Play Count",
+    SPOTIFY_POPULARITY = "Spotify - Popularity",
+    LASTFM_SCROBBLES = "LastFM - Scrobbles",
+    LASTFM_PERSONALSCROBBLES = "LastFM - My Scrobbles",
+    LASTFM_PLAYCOUNT = "LastFM - Play Count",
+}
+
+export enum SortProp {
+    "Spotify - Play Count" = "playcount",
+    "Spotify - Popularity" = "popularity",
+    "LastFM - Scrobbles" = "scrobbles",
+    "LastFM - My Scrobbles" = "personalScrobbles",
+    "LastFM - Play Count" = "lastfmPlaycount",
+}
 
 // Fetching Tracks
 
-const getAlbumTracks = async (uri: SpotifyURI): Promise<TrackData[]> => {
+const getAlbumTracks = async (uri: SpotifyURI) => {
     const albumRes = await fetchAlbumGQL(uri)
     const releaseDate = albumRes.date.isoString.split("T")[0]
-    return albumRes.tracks.items.map(
-        f(
-            lookup("track"),
-            o.map(
-                f(
-                    parseTrackFromAlbum,
-                    upsertAt("albumName", albumRes.name),
-                    upsertAt("albumUri", albumRes.uri),
-                    upsertAt("releaseDate", releaseDate),
-                ),
+
+    return p(
+        albumRes.tracks.items,
+        a.map(
+            f(
+                parseTrackFromAlbum,
+                Lens.fromProp<TrackData>()("albumUri").set(albumRes.uri),
+                Lens.fromProp<TrackData>()("albumName").set(albumRes.name),
+                Lens.fromProp<TrackData>()("releaseDate").set(releaseDate),
             ),
         ),
     )
 }
 
-export const parseUri = (uri: SpotifyURI) =>
-    uri.match(
-        /^(?<type>spotify:(?:artist|track|album|playlist))(?:_v2)?:(?<id>[a-zA-Z0-9_]{62})/,
-    )?.groups as { type: SpotifyURIType; id: SpotifyID }
-
-export const getPlaylistTracks = f(fetchPlaylistAPI, async x =>
-    p(await x, a.map(parseTrackFromPlaylistAPI)),
+export const getPlaylistTracks = f(
+    fetchPlaylistAPI,
+    async(a.map(parseTrackFromPlaylistAPI)),
 )
 
 async function getArtistTracks(uri: SpotifyURI) {
@@ -77,7 +90,8 @@ async function getArtistTracks(uri: SpotifyURI) {
                 getAlbumTracks,
             ),
         ),
-        async x => p(await Promise.all(x), a.flatten),
+        x => Promise.all(x),
+        async(a.flatten),
     )
 
     const disc = (await fetchArtistGQL(uri)).discography
@@ -125,15 +139,9 @@ async function getArtistTracks(uri: SpotifyURI) {
     if (CONFIG.artistLikedTracks)
         add(
             await p(
-                uri,
-                parseUri,
-                lookup("id"),
-                o.map(
-                    f(fetchArtistLikedTracksSP, async x =>
-                        a.map(parseTrackFromArtistLikedTracksSP)(await x),
-                    ),
-                ),
-                o.getOrElse(constant(Promise.resolve([] as TrackData[]))),
+                parseUri(uri).id,
+                fetchArtistLikedTracksSP,
+                async(a.map(parseTrackFromArtistLikedTracksSP)),
             ),
         )
 
@@ -145,47 +153,47 @@ async function getArtistTracks(uri: SpotifyURI) {
 const fetchAPITracksFromTracks: TracksPopulater = f(
     a.map(track => parseUri(track.uri).id),
     fetchTracksSpotAPI,
-    async x => p(await x, a.map(parseTrackFromSpotifyAPI)),
+    async(a.map(parseTrackFromSpotifyAPI)),
 )
 
 const fetchAlbumTracksFromTracks: TracksPopulater = f(
-    groupBy(track => String(track.albumName)),
+    groupBy(track => String(track.albumUri)),
     mapWithIndex(async (albumUri: SpotifyURI, tracks: TrackData[]) => {
         const albumTracks = await getAlbumTracks(albumUri)
-
         return a.filter<TrackData>(albumTrack =>
             a.some<TrackData>(track => albumTrack.uri === track.uri)(tracks),
         )(albumTracks)
     }),
     values,
-    async x => p(await Promise.all(x), a.flatten),
+    x => Promise.all(x),
+    async(a.flatten),
 )
-
-const objConcat2 = getUnionSemigroup({ concat: (x: any, y: any) => x }).concat
-const objConcat = a.reduce({}, objConcat2)
 
 const populateTracksSpot =
     (propName: keyof typeof SortProp) => (tracks: TrackData[]) =>
         p(
             tracks,
-            a.filter(f(lookup(SortProp[propName]), o.isNone)),
+            a.filter(
+                f(
+                    Optional.fromNullableProp<TrackData>()(SortProp[propName])
+                        .getOption,
+                    o.isNone,
+                ),
+            ),
             guard([
-                [
-                    startsWith(SortBy.SPOTIFY_POPULARITY),
-                    constant(fetchAPITracksFromTracks),
-                ],
                 [
                     startsWith(SortBy.SPOTIFY_PLAYCOUNT),
                     constant(fetchAlbumTracksFromTracks),
                 ],
-            ])(constant(x => Promise.resolve(x)))(propName),
-            async x =>
-                p(
-                    (await x).concat(tracks),
-                    groupBy(Lens.fromProp<TrackData>()("uri").get),
-                    values,
-                    a.map(objConcat),
-                ) as TrackData[],
+                [
+                    startsWith(SortBy.SPOTIFY_POPULARITY),
+                    constant(fetchAPITracksFromTracks),
+                ],
+            ])(constant(task.of([])))(propName),
+            async(a.concat(tracks)),
+            async(groupBy(Lens.fromProp<TrackData>()("uri").get)),
+            async(values<TrackData[]>),
+            async(a.map(objConcat<TrackData>())),
         )
 
 // Populating Tracks For LastFM
@@ -210,7 +218,7 @@ export const fetchTracks = guard([
     [startsWith(SpotifyURIType.ALBUM), getAlbumTracks],
     [startsWith(SpotifyURIType.ARTIST), getArtistTracks],
     [startsWith(SpotifyURIType.PLAYLIST), getPlaylistTracks],
-])(x => Promise.resolve([] as TrackData[]))
+])(task.of([]))
 
 export const populateTracks = guard<keyof typeof SortProp, TracksPopulater>([
     [startsWith("Spotify"), populateTracksSpot],
@@ -218,7 +226,7 @@ export const populateTracks = guard<keyof typeof SortProp, TracksPopulater>([
         startsWith("LastFM"),
         constant(f(a.map(populateTrackLastFM), x => Promise.all(x))),
     ],
-])(constant(x => Promise.resolve(x)))
+])(constant(task.of([])))
 
 let queue = new Array<TrackData>()
 export const sortByProp =
@@ -226,24 +234,24 @@ export const sortByProp =
         const prop = SortProp[name]
         const toProp = Optional.fromNullableProp<TrackData>()(prop).getOption
 
-        queue = await p(uri, fetchTracks, async x =>
-            p(await x, populateTracks(name), async x =>
-                p(
-                    await x,
-                    a.filter(f(toProp, o.isSome)),
-                    a.sort(
-                        p(
-                            number.Ord,
-                            ord.contramap(f(toProp, o.getOrElse(constant(-1)))),
-                        ),
+        queue = await p(
+            uri,
+            fetchTracks,
+            async(populateTracks(name)),
+            async(a.filter(f(toProp, o.isSome))),
+            async(
+                a.sort(
+                    p(
+                        number.Ord,
+                        ord.contramap(f(toProp, o.getOrElse(constant(-1)))),
                     ),
-                    CONFIG.ascending ? identity : a.reverse,
-                    a.append({ uri: "spotify:delimiter" } as TrackData),
                 ),
             ),
+            async(CONFIG.ascending ? identity : a.reverse),
+            async(a.append({ uri: "spotify:delimiter" } as TrackData)),
         )
 
-        if (queue.length < 1)
+        if (queue.length <= 1)
             return Spicetify.showNotification("Data not available")
 
         await Spicetify.Platform.PlayerAPI.clearQueue()
@@ -256,7 +264,7 @@ export const sortByProp =
 const showIn =
     (allowedTypes: string[]) =>
     ([uri]: SpotifyURI[]) =>
-        allowedTypes.some(String.prototype.startsWith.bind(uri))
+        p(allowedTypes, a.some(flip(startsWith)(uri)))
 
 const showAlways = showIn([
     SpotifyURIType.ALBUM,
@@ -267,7 +275,7 @@ const showAlways = showIn([
 const createSortByPropSubmenu = (name: keyof typeof SortProp, icon: any) =>
     new Spicetify.ContextMenu.Item(
         name,
-        unary(sortByProp(name)) as any,
+        tupled(sortByProp(name)) as any,
         showAlways,
         icon,
         false,

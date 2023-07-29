@@ -11,7 +11,11 @@ settings.addToggle("artistAlbums", "Albums", true)
 settings.addToggle("artistCompilations", "Compilations", true)
 settings.addToggle("artistLikedTracks", "Liked Tracks", false)
 settings.addInput("lastFmUsername", "Last.fm Username", "Delusoire")
-settings.addInput("LFMApiKey", "Last.fm API Key", "44654ea047786d90338c17331a5f5d95")
+settings.addInput(
+    "LFMApiKey",
+    "Last.fm API Key",
+    "44654ea047786d90338c17331a5f5d95",
+)
 
 settings.pushSettings()
 
